@@ -1,0 +1,277 @@
+/* ==========================================================================
+   PAVAN D R — MAIN DESIGN TOKENS & CINEMATIC RESET
+   ========================================================================== */
+
+:root {
+  /* Soft Emerald & Deep Onyx */
+  --hue-primary: 155; 
+  --accent-primary: hsl(var(--hue-primary), 60%, 55%);
+  --accent-glow: hsla(var(--hue-primary), 60%, 55%, 0.15);
+  --accent-soft: hsla(var(--hue-primary), 60%, 55%, 0.08);
+
+  --bg-space: #07090a;
+  --surface-0: transparent;
+  --surface-1: #111518;
+  --surface-border: rgba(255, 255, 255, 0.08);
+  
+  --text-main: #d8e0e8;
+  --text-muted: #8b99a8;
+  --text-dim: #5c6875;
+
+  --font-display: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --transition-fast: 0.2s var(--ease-spring);
+  --transition-slow: 0.8s var(--ease-out-expo);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  font-size: 16px;
+  background-color: var(--bg-space);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  cursor: default;
+  position: relative;
+}
+
+
+
+#bg-canvas {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: -2; pointer-events: none;
+}
+
+/* Global Architectural Axis */
+.global-axis {
+  position: fixed;
+  top: 0; left: 50%;
+  width: 1px; height: 100vh;
+  background: var(--surface-border);
+  z-index: -1;
+  opacity: 0.3;
+}
+
+/* Cinematic Flow Layout */
+.cinematic-flow {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  position: relative;
+  /* Push content slightly right to allow left sidebar */
+  padding-left: 120px;
+}
+
+.flow-section {
+  padding: 160px 0;
+  position: relative;
+}
+
+.section-heading {
+  margin-bottom: 80px;
+  border-left: 2px solid var(--accent-primary);
+  padding-left: 24px;
+}
+
+.heading-num {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--accent-primary);
+  letter-spacing: 2px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.heading-title {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+/* Command Button (Replacing Generic Buttons) */
+.cmd-input {
+  background: transparent;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  cursor: pointer;
+  position: relative;
+}
+
+.cmd-input::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; width: 0%; height: 1px;
+  background: var(--accent-primary);
+  transition: width var(--transition-fast);
+}
+
+.cmd-input:hover::after { width: 100%; }
+.cmd-input:hover { color: var(--accent-primary); }
+
+.cmd-prompt { color: var(--accent-primary); font-weight: 700; }
+.cursor-blink { animation: blink 1s step-end infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* Scroll Tracker Sidebar */
+.scroll-tracker {
+  position: fixed;
+  top: 50%; left: 40px;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 20px;
+  z-index: 100;
+  height: 400px;
+}
+
+.tracker-line {
+  width: 1px; height: 100%;
+  background: var(--surface-border);
+  position: relative;
+}
+
+.tracker-fill {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 0%;
+  background: var(--accent-primary);
+  box-shadow: 0 0 10px var(--accent-glow);
+  transition: height 0.1s linear;
+}
+
+.tracker-labels {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.tracker-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: color var(--transition-fast), transform var(--transition-fast);
+  cursor: pointer;
+  transform-origin: left;
+}
+
+.tracker-label.active {
+  color: var(--accent-primary);
+  transform: scale(1.1);
+  font-weight: 700;
+}
+
+/* Scroll Indicator (Mouse Wheel) */
+.scroll-indicator {
+  position: relative;
+  margin-top: 80px;
+  margin-bottom: 40px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0.6;
+  transition: opacity var(--transition-fast);
+  cursor: pointer;
+}
+
+.scroll-indicator:hover {
+  opacity: 1;
+}
+
+.mouse-icon {
+  width: 20px;
+  height: 32px;
+  border: 1.5px solid var(--text-muted);
+  border-radius: 10px;
+  position: relative;
+}
+
+.mouse-icon .wheel {
+  width: 2px;
+  height: 6px;
+  background: var(--text-main);
+  border-radius: 2px;
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: wheel-drop 1.5s infinite;
+}
+
+@keyframes wheel-drop {
+  0% { transform: translate(-50%, 0); opacity: 1; }
+  100% { transform: translate(-50%, 12px); opacity: 0; }
+}
+
+.scroll-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+}
+
+/* SFX Toggle */
+.sfx-toggle {
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  background: transparent;
+  border: 1px solid var(--surface-border);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 8px 16px;
+  cursor: pointer;
+  z-index: 999;
+  border-radius: 4px;
+  transition: all var(--transition-fast);
+}
+
+.sfx-toggle:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* Matrix Theme */
+body.theme-matrix {
+  --hue-primary: 120;
+  --bg-space: #000500;
+  --surface-1: #001100;
+  --text-main: #00ff00;
+  --text-muted: #008800;
+  --font-display: 'JetBrains Mono', monospace;
+  --font-body: 'JetBrains Mono', monospace;
+}
+
+body.theme-matrix .global-axis,
+body.theme-matrix .tracker-line {
+  background: rgba(0, 255, 0, 0.2);
+}
+
+@keyframes term-fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

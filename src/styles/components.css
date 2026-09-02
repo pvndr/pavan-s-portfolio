@@ -1,0 +1,588 @@
+/* ==========================================================================
+   PAVAN D R — ASYMMETRIC COMPONENTS & EDITORIAL LAYOUTS
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   1. Hero System Readout
+   -------------------------------------------------------------------------- */
+.hero-content {
+  animation: gentle-float 6s ease-in-out infinite;
+}
+.system-readout {
+  margin-top: 24px;
+  margin-bottom: 48px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--surface-1);
+  padding: 16px 24px;
+  border-left: 2px solid var(--surface-border);
+  max-width: 400px;
+}
+
+.readout-line .prompt { color: var(--text-dim); margin-right: 8px; }
+.readout-line.success { color: var(--accent-text); }
+.readout-line.success .prompt { color: var(--accent-primary); }
+.typing::after { content: '...'; animation: typingDots 1.5s infinite step-end; }
+@keyframes typingDots { 0% { content: '.'; } 33% { content: '..'; } 66% { content: '...'; } }
+
+/* --------------------------------------------------------------------------
+   2. Editorial Blocks (Case Studies)
+   -------------------------------------------------------------------------- */
+.category-heading {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  border-bottom: 1px solid var(--surface-border);
+  padding-bottom: 16px;
+  margin-bottom: 40px;
+  margin-top: 40px;
+}
+
+.editorial-blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 160px;
+}
+
+.editorial-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: flex-start;
+  gap: 80px;
+  position: relative;
+}
+
+.editorial-block.asymmetric-right {
+  grid-template-columns: 1.2fr 0.8fr;
+}
+
+.editorial-block.asymmetric-left {
+  grid-template-columns: 0.8fr 1.2fr;
+}
+
+.eb-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 2;
+}
+
+.eb-meta {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent-primary);
+}
+
+.eb-title {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+
+.eb-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-main);
+  font-weight: 400;
+  margin-bottom: 16px;
+}
+
+.eb-text p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.eb-text strong {
+  color: var(--text-main);
+  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.eb-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 24px;
+  border-top: 1px solid var(--surface-border);
+}
+
+.eb-tech span {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+/* SVG Blueprint Visuals */
+.eb-visual {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  transition: opacity var(--transition-slow);
+}
+
+.editorial-block:hover .eb-visual { opacity: 1; }
+
+.blueprint-svg {
+  width: 100%;
+  height: auto;
+  stroke: var(--accent-primary);
+  fill: none;
+  stroke-width: 1.5;
+  animation: gentle-float 8s ease-in-out infinite;
+}
+
+.svg-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  fill: var(--text-muted);
+  stroke: none;
+}
+
+.svg-label.center { text-anchor: middle; }
+
+/* EB Actions */
+.eb-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.eb-actions .cmd-input {
+  font-size: 0.8rem;
+  padding: 8px 16px;
+}
+
+/* --------------------------------------------------------------------------
+   2.5 Project Cards (Other Projects)
+   -------------------------------------------------------------------------- */
+.project-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 40px;
+  margin-top: 60px;
+}
+
+.project-card {
+  background: var(--surface-1);
+  border: 1px solid var(--surface-border);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  transition: transform var(--transition-normal), border-color var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-primary);
+}
+
+.pc-visual {
+  width: 100%;
+  aspect-ratio: 16/9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  opacity: 0.8;
+  transition: opacity var(--transition-normal);
+}
+
+.project-card:hover .pc-visual {
+  opacity: 1;
+}
+
+.pc-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+.pc-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.pc-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  flex: 1;
+}
+
+.pc-highlights {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pc-highlights li {
+  font-size: 0.85rem;
+  color: var(--text-main);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.pc-highlights li::before {
+  content: '>';
+  color: var(--accent-primary);
+  font-family: var(--font-mono);
+}
+
+.pc-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--surface-border);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+/* --------------------------------------------------------------------------
+   3. Interactive Capability Map
+   -------------------------------------------------------------------------- */
+.network-diagram {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  padding: 40px 0;
+  position: relative;
+}
+
+.network-cluster {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 200px;
+}
+
+.node-circle {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 24px;
+  border: 1px solid var(--accent-primary);
+  border-radius: 99px;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--text-main);
+  background: var(--surface-1);
+  position: relative;
+  z-index: 2;
+}
+
+.node-circle::before {
+  content: '';
+  position: absolute;
+  left: -20px; top: 50%;
+  width: 20px; height: 1px;
+  background: var(--accent-primary);
+}
+
+.branch-nodes {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-left: 24px;
+  border-left: 1px dashed var(--surface-border);
+  margin-left: 24px;
+}
+
+.leaf-node {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  position: relative;
+}
+
+.leaf-node::before {
+  content: '';
+  position: absolute;
+  left: -24px; top: 50%;
+  width: 16px; height: 1px;
+  background: dashed var(--surface-border);
+}
+
+/* --------------------------------------------------------------------------
+   4. Git/Pipeline Timeline
+   -------------------------------------------------------------------------- */
+.git-timeline {
+  position: relative;
+  padding-left: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.git-branch-line {
+  position: absolute;
+  top: 0; left: 16px;
+  width: 60px; height: 100%;
+  stroke: var(--surface-border);
+  stroke-width: 2;
+  fill: none;
+}
+
+.git-branch-line .branch { stroke: var(--accent-primary); stroke-dasharray: 4 4; }
+
+.commit-node {
+  position: relative;
+}
+
+.commit-dot {
+  position: absolute;
+  left: -48px; top: 6px;
+  width: 12px; height: 12px;
+  background: var(--bg-space);
+  border: 2px solid var(--accent-primary);
+  border-radius: 50%;
+  z-index: 2;
+  box-shadow: 0 0 10px var(--accent-glow);
+  transform: scale(0);
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s;
+}
+
+.commit-node.in-view .commit-dot {
+  transform: scale(1);
+}
+
+.commit-dot.edu-dot { border-color: var(--text-dim); box-shadow: none; }
+
+.commit-content { display: flex; flex-direction: column; gap: 4px; }
+/* Base styles and shared typing properties */
+.commit-hash, .commit-date, .commit-title, .status-indicator, .commit-org {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 0;
+  border-right: 2px solid transparent;
+}
+
+.commit-hash { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-primary); }
+.commit-date { font-size: 0.85rem; color: var(--text-dim); }
+.commit-title { font-family: var(--font-display); font-size: 1.4rem; color: #fff; margin-top: 4px; }
+.status-indicator { font-size: 0.85rem; color: #4ade80; display: block; margin-top: 4px; margin-bottom: 4px; font-family: var(--font-mono); }
+.commit-org { font-size: 0.95rem; color: var(--text-main); }
+
+/* The description uses a height-based step reveal to simulate line-by-line typing */
+.commit-desc { 
+  font-size: 0.95rem; 
+  color: var(--text-muted); 
+  margin-top: 8px; 
+  max-width: 600px; 
+  line-height: 1.6; 
+  overflow: hidden;
+  max-height: 0;
+  position: relative;
+}
+
+/* 1. Type the Hash */
+.commit-node.in-view .commit-hash {
+  animation: typing 1s steps(20, end) 1.5s forwards;
+}
+
+/* 2. Type the Date */
+.commit-node.in-view .commit-date {
+  animation: typing 1s steps(20, end) 3s forwards;
+}
+
+/* 3. Type the Title */
+.commit-node.in-view .commit-title {
+  animation: typing 1.5s steps(30, end) 4.5s forwards;
+}
+
+/* 4. Type the Status/Org */
+.commit-node.in-view .status-indicator,
+.commit-node.in-view .commit-org {
+  animation: typing 1.5s steps(30, end) 6.5s forwards;
+}
+
+/* 5. Type the Description */
+.commit-node.in-view .commit-desc {
+  animation: desc-type 3s steps(5, end) 8.5s forwards;
+}
+
+/* 6. Blinking Cursor at the very end of the animation sequence */
+.commit-desc::after {
+  content: '█';
+  color: var(--accent-primary);
+  opacity: 0;
+  display: inline-block;
+  margin-left: 5px;
+  animation: blink-final-cursor 0.8s step-end infinite 12s forwards;
+}
+
+@keyframes desc-type {
+  from { max-height: 0; }
+  to { max-height: 300px; } 
+}
+
+@keyframes blink-final-cursor {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+/* --------------------------------------------------------------------------
+   5. Terminal Reading Logs (Notebook)
+   -------------------------------------------------------------------------- */
+.terminal-logs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  max-width: 800px;
+}
+
+.log-entry {
+  border-left: 2px solid var(--surface-border);
+  padding-left: 24px;
+  transition: border-color var(--transition-fast);
+}
+
+.log-entry:hover { border-color: var(--accent-primary); }
+.log-timestamp { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); margin-bottom: 8px; }
+.log-type { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-primary); margin-bottom: 4px; }
+.log-title { font-family: var(--font-display); font-size: 1.2rem; color: var(--text-main); text-decoration: none; display: block; margin-bottom: 12px; }
+.log-body { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 16px; line-height: 1.6; font-family: var(--font-mono); }
+.log-status { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); }
+
+/* --------------------------------------------------------------------------
+   6. Interactive Terminal
+   -------------------------------------------------------------------------- */
+.interactive-terminal {
+  background: #040506;
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  min-height: 320px;
+  max-width: 700px;
+  margin-bottom: 40px;
+}
+
+.term-top-bar {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--surface-border);
+}
+.term-btn { width: 12px; height: 12px; border-radius: 50%; background: var(--surface-border); }
+.term-title { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); margin-left: auto; }
+
+.term-window {
+  flex: 1; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-main); display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; overflow-y: auto;
+}
+.term-line { color: var(--text-muted); }
+.term-highlight { color: var(--accent-primary); }
+
+.term-input-line { display: flex; align-items: center; gap: 10px; }
+.term-prompt { font-family: var(--font-mono); color: var(--accent-primary); font-size: 0.85rem; }
+.term-input { flex: 1; background: transparent; border: none; outline: none; color: var(--text-main); font-family: var(--font-mono); font-size: 0.85rem; }
+
+.fallback-contact { display: flex; align-items: center; gap: 32px; }
+.social-links { display: flex; gap: 24px; }
+.social-links a { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); text-decoration: none; transition: color var(--transition-fast); }
+.social-links a:hover { color: var(--text-main); }
+
+/* --------------------------------------------------------------------------
+   Resume Modal Overlay
+   -------------------------------------------------------------------------- */
+body.modal-open {
+  overflow: hidden;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  background: var(--surface-1);
+  border: 1px solid var(--surface-border);
+  width: 90%;
+  max-width: 900px;
+  height: 85vh;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(20px) scale(0.98);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-overlay.active .modal-content {
+  transform: translateY(0) scale(1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--surface-border);
+  background: var(--surface-2);
+}
+
+.modal-title {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--text-main);
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.modal-close:hover {
+  color: var(--accent-primary);
+}
+
+.modal-body {
+  flex: 1;
+  width: 100%;
+  background: #333; /* Darker fallback */
+}

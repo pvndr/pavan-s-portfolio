@@ -1,0 +1,102 @@
+/* ==========================================================================
+   PAVAN D R — CINEMATIC REVEALS & SVG CHOREOGRAPHY
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Intersection Observer Reveal Classes
+   -------------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transition: all var(--transition-slow);
+}
+
+.reveal.in-view {
+  opacity: 1;
+}
+
+/* Fade Up */
+.fade-up { transform: translateY(40px); }
+.fade-up.in-view { transform: translateY(0); }
+
+/* Fade Right/Left */
+.fade-right { transform: translateX(-40px); }
+.fade-right.in-view { transform: translateX(0); }
+.fade-left { transform: translateX(40px); }
+.fade-left.in-view { transform: translateX(0); }
+
+/* Slow Parallax Drift */
+.parallax-slow { transform: translateY(60px); }
+.parallax-slow.in-view { transform: translateY(0); transition: all 1.2s var(--ease-out-expo); }
+
+/* Delays */
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.2s; }
+.delay-3 { transition-delay: 0.3s; }
+.delay-4 { transition-delay: 0.4s; }
+.delay-5 { transition-delay: 0.5s; }
+.delay-6 { transition-delay: 0.6s; }
+
+/* --------------------------------------------------------------------------
+   2. SVG Blueprint Animations
+   -------------------------------------------------------------------------- */
+.draw-path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  transition: stroke-dashoffset 1.5s var(--ease-out-expo);
+}
+
+.in-view .draw-path {
+  stroke-dashoffset: 0;
+}
+
+.draw-circle, .box-draw, .draw-poly {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  transition: stroke-dashoffset 1.5s var(--ease-out-expo);
+}
+
+.in-view .draw-circle, .in-view .box-draw, .in-view .draw-poly {
+  stroke-dashoffset: 0;
+}
+
+/* Specific delay handling for nested SVG elements */
+.in-view .draw-path.delay-2, .in-view .draw-circle.delay-2 {
+  transition-delay: 0.3s;
+}
+
+/* Pulsing Nodes in Blueprints */
+.node-pulse {
+  fill: var(--accent-primary);
+  opacity: 0;
+  transform: scale(0.5);
+  transform-origin: center;
+  transition: all 0.5s var(--ease-spring);
+}
+
+.in-view .node-pulse {
+  opacity: 1;
+  transform: scale(1);
+  transition-delay: 0.8s; /* wait for path to draw */
+  animation: svg-node-pulse 2s infinite alternate 1.2s;
+}
+
+@keyframes svg-node-pulse {
+  from { filter: drop-shadow(0 0 2px var(--accent-glow)); }
+  to { filter: drop-shadow(0 0 8px var(--accent-primary)); }
+}
+
+@keyframes typing {
+  from { max-width: 0; }
+  to { max-width: 100%; }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: var(--accent-primary); }
+}
+
+@keyframes gentle-float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0px); }
+}
