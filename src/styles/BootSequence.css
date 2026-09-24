@@ -1,0 +1,64 @@
+.boot-sequence-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: var(--bg-primary);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.8s var(--ease-out-expo), visibility 0.8s;
+}
+
+.boot-sequence-overlay.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.boot-terminal {
+  width: 90%;
+  max-width: 600px;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.boot-line {
+  margin-bottom: 0.5rem;
+  animation: boot-line-appear 0.2s ease-out forwards;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.boot-prompt {
+  color: var(--accent-primary);
+  margin-right: 0.5rem;
+}
+
+@keyframes boot-line-appear {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.boot-progress-bar {
+  width: 90%;
+  max-width: 600px;
+  height: 4px;
+  background: var(--bg-secondary);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.boot-progress-fill {
+  height: 100%;
+  background: var(--accent-primary);
+  box-shadow: 0 0 8px var(--accent-glow);
+  transition: width 0.3s ease-out;
+}

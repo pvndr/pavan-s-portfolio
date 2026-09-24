@@ -104,7 +104,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
         setStatus('error');
         setStatusMessage(result.message || 'Transmission failed. Please try again.');
       }
-    } catch (error) {
+    } catch {
       setStatus('error');
       setStatusMessage('Network error. Transmission failed.');
     }

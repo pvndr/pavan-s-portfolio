@@ -23,6 +23,7 @@ export function SfxToggle() {
       id="sfx-toggle" 
       className="sfx-toggle magnetic-target"
       onClick={toggleSfx}
+      aria-label={`Toggle sound effects, currently ${enabled ? 'enabled' : 'disabled'}`}
     >
       <span className="sfx-status">SFX: {enabled ? 'ON' : 'OFF'}</span>
     </button>

@@ -1,13 +1,16 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BackgroundCanvas } from './components/BackgroundCanvas';
 import { Cursor } from './components/Cursor';
 import { SfxToggle } from './components/SfxToggle';
 import { ScrollTracker } from './components/ScrollTracker';
+import { BootSequence } from './components/BootSequence';
 import { MainContent } from './components/MainContent';
 import { useScrollReveal } from './hooks/useScrollReveal';
 import { playHoverSound, playClickSound } from './utils/audio';
 
 export default function App() {
+  const [isBooting, setIsBooting] = useState(true);
+
   useScrollReveal();
 
   useEffect(() => {
@@ -50,16 +53,20 @@ export default function App() {
 
   return (
     <>
-      <SfxToggle />
-      <div id="noise-overlay"></div>
+      {isBooting && <BootSequence onComplete={() => setIsBooting(false)} />}
       
-      <BackgroundCanvas />
-      <Cursor />
+      <div style={{ opacity: isBooting ? 0 : 1, transition: 'opacity 0.5s ease-in-out' }}>
+        <SfxToggle />
+        <div id="noise-overlay"></div>
+        
+        <BackgroundCanvas />
+        <Cursor />
 
-      <div className="global-axis"></div>
-      <ScrollTracker />
+        <div className="global-axis"></div>
+        <ScrollTracker />
 
-      <MainContent />
+        <MainContent />
+      </div>
     </>
   );
 }

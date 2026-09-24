@@ -275,3 +275,41 @@ body.theme-matrix .tracker-line {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* Responsive Layout Adaptations */
+@media (max-width: 1024px) {
+  .scroll-tracker {
+    display: none;
+  }
+  .global-axis {
+    display: none;
+  }
+  .cinematic-flow {
+    padding: 0 24px;
+    padding-left: 24px;
+  }
+  .flow-section {
+    padding: 100px 0;
+  }
+  .sfx-toggle {
+    top: 20px;
+    right: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .cinematic-flow {
+    padding: 0 16px;
+    padding-left: 16px;
+  }
+  .flow-section {
+    padding: 72px 0;
+  }
+  .section-heading {
+    margin-bottom: 48px;
+    padding-left: 16px;
+  }
+  .heading-title {
+    font-size: 1.85rem;
+  }
+}

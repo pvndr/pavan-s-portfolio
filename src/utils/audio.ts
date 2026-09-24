@@ -38,7 +38,7 @@ export function playHoverSound() {
     
     osc.start();
     osc.stop(audioCtx.currentTime + 0.05);
-  } catch (e) {
+  } catch {
     // Ignore audio errors
   }
 }
@@ -62,7 +62,7 @@ export function playClickSound() {
     
     osc.start();
     osc.stop(audioCtx.currentTime + 0.08);
-  } catch (e) {
+  } catch {
     // Ignore audio errors
   }
 }
@@ -84,7 +84,7 @@ export function playTypingSound() {
     
     osc.start();
     osc.stop(audioCtx.currentTime + 0.02);
-  } catch (e) {
+  } catch {
     // Ignore audio errors
   }
 }
