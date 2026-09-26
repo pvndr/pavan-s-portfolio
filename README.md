@@ -157,7 +157,7 @@ AI Software Engineer
 
 - GitHub: https://github.com/pvndr
 - LinkedIn: https://www.linkedin.com/in/pavandr-ai/
-- Portfolio: https://pavan-s-portfolio.vercel.app
+- Portfolio: https://pavandr.vercel.app
 
 ---
 
