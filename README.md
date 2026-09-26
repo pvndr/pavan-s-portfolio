@@ -6,7 +6,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)]()
 [![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)]()
 
-🌐 **Live Portfolio:** https://pavan-s-portfolio.vercel.app
+🌐 **Live Portfolio:** https://pavandr.vercel.app/
 
 ---
 
