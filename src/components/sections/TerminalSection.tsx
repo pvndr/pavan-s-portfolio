@@ -1,221 +1,279 @@
 import React, { useState } from 'react';
-import { playTypingSound } from '../../utils/audio';
+import { Copy, Check, ExternalLink, Mail, Terminal, Sparkles } from 'lucide-react';
+import { profile } from '../../data/profile';
+import { projects } from '../../data/projects';
+import { educationTimeline } from '../../data/experience';
+import { publications } from '../../data/publications';
+import { playClickSound, playTypingSound } from '../../utils/audio';
 
-interface TerminalSectionProps {
-  setIsContactModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  openModal: (title: string, documentUrl: string, type: 'image' | 'pdf', details?: { label: string, value: string }[]) => void;
-}
-
-export function TerminalSection({ setIsContactModalOpen, openModal }: TerminalSectionProps) {
+export function TerminalSection() {
   const [cliInput, setCliInput] = useState('');
+  const [copiedEmail, setCopiedEmail] = useState(false);
   const [cliLines, setCliLines] = useState<React.ReactNode[]>([
-    <div key="init-1" className="term-line">Initializing communication protocols...</div>,
-    <div key="init-2" className="term-line">Type <span className="term-highlight">help</span> to see available commands.</div>
+    <div key="init-1" className="inacio-term-line sys">
+      [PROTOCOL: ONLINE] Inácio-styled engineering console initialized.
+    </div>,
+    <div key="init-2" className="inacio-term-line">
+      Query systems, inspect architecture, or click a topic chip below. Type <span className="inacio-term-highlight">help</span> for commands.
+    </div>,
   ]);
-  const [isWiping, setIsWiping] = useState(false);
 
-  const copyEmailToClipboard = () => {
-    const email = "pavandr715@gmail.com";
-    navigator.clipboard.writeText(email).then(() => {
-      const btnText = document.getElementById('copy-email-btn-text');
-      if (btnText) {
-        const originalText = btnText.textContent;
-        btnText.textContent = "✓ Email Copied!";
-        setTimeout(() => {
-          btnText.textContent = originalText;
-        }, 2000);
-      }
-    });
+  const copyEmail = () => {
+    playClickSound();
+    navigator.clipboard.writeText(profile.links.email);
+    setCopiedEmail(true);
+    setTimeout(() => setCopiedEmail(false), 2000);
   };
 
-  const handleCliSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!cliInput.trim()) return;
-
-    const rawCmd = cliInput.trim();
-    const cmd = rawCmd.toLowerCase();
-    setCliInput('');
+  const handleCommand = (rawCmd: string) => {
+    playTypingSound();
+    const cmd = rawCmd.trim().toLowerCase();
+    if (!cmd) return;
 
     const userLine = (
-      <div key={Date.now() + 'u'} className="term-line">
-        <span className="term-prompt">guest@pavan:~$</span> {rawCmd}
+      <div key={Date.now() + 'u'} className="inacio-term-line user">
+        <span className="inacio-term-prompt">pavan:~$</span> {rawCmd}
       </div>
     );
 
-    let respLine: React.ReactNode = null;
+    let respLine: React.ReactNode;
 
-    switch (cmd) {
-      case 'help':
-        respLine = (
-          <div key={Date.now() + 'r'} className="term-line" style={{ animation: 'term-fade-up 0.3s forwards' }}>
-            Available commands:<br />
-            • <span className="term-highlight">resume</span> - Fetch engineering curriculum vitae<br />
-            • <span className="term-highlight">hire</span> - View recruitment information<br />
-            • <span className="term-highlight">projects</span> - List product case studies<br />
-            • <span className="term-highlight">skills</span> - Display capability matrix<br />
-            • <span className="term-highlight">whoami</span> - Display current user identity<br />
-            • <span className="term-highlight">theme [matrix|onyx]</span> - Change system visual theme<br />
-            • <span className="term-highlight">contact</span> - Display communication channels<br />
-            • <span className="term-highlight">github</span> - Open GitHub profile<br />
-            • <span className="term-highlight">linkedin</span> - Open LinkedIn profile<br />
-            • <span className="term-highlight">clear</span> - Clear terminal buffer
+    if (cmd.includes('rag') || cmd === 'project 1') {
+      const rag = projects.find((p) => p.id === 'rag-assistant');
+      respLine = (
+        <div key={Date.now() + 'r'} className="inacio-term-block">
+          <div className="inacio-term-highlight">&gt; RAG Knowledge Assistant (Full Stack AI System)</div>
+          <div>{rag?.summary}</div>
+          <div style={{ color: 'var(--inacio-fg-dim)' }}>
+            <strong>Architecture:</strong> {rag?.architectureHighlight}
           </div>
-        );
-        break;
-      case 'projects':
-        respLine = <div key={Date.now() + 'r'} className="term-line">1. Chronicle (Personal Publishing & Reflection)<br />2. RAG Knowledge Assistant (Multi-Provider RAG Platform)<br />3. CricShift (Predictive Momentum Engine)<br />4. LabPad (Offline-First PWA)<br />5. Interactive Valentine's Experience</div>;
-        break;
-      case 'cv':
-      case 'resume':
-        respLine = (
-          <div key={Date.now() + 'r'} className="term-line">
-            <div style={{ animation: 'typingDots 1.5s steps(3, end)' }}>&gt; EXTRACTING ENCRYPTED DOSSIER...</div>
-            <div style={{ animation: 'term-fade-up 0.3s forwards', animationDelay: '1.5s', opacity: 0, marginTop: '8px' }}>
-              =====================================<br />
-              <span style={{ color: '#fff' }}>IDENTITY : PAVAN D R</span><br />
-              CLASS    : AI SOFTWARE ENGINEER<br />
-              LOCATION : BENGALURU, KARNATAKA<br />
-              CONTACT  : PAVANDR715@GMAIL.COM<br />
-              STATUS   : ACTIVELY BUILDING<br />
-              =====================================<br />
-              <br />
-              <span style={{ color: '#fff' }}>[ SKILLS ]</span><br />
-              Python, Java, C, SQL, React, FastAPI, Machine Learning, RAG<br />
-              <br />
-              <span style={{ color: '#fff' }}>[ EDUCATION ]</span><br />
-              B.E. Computer Science Engineering (CGPA: 8.56)<br />
-              <br />
-              <span style={{ color: '#fff' }}>[ PROJECTS ]</span><br />
-              • Chronicle (Full-Stack Publishing Platform)<br />
-              • RAG Knowledge Assistant (Multi-Provider RAG Platform)<br />
-              • CricShift (Momentum Shift Detection)<br />
-              <br />
-              <button 
-                className="cmd-input" 
-                style={{ display: 'inline-flex', marginTop: '8px', textDecoration: 'none', border: 'none', background: 'transparent', cursor: 'pointer', padding: 0, color: 'inherit', font: 'inherit' }}
-                onClick={() => openModal(
-                  'Pavan D R - Resume',
-                  '/resume.pdf',
-                  'pdf',
-                  [
-                    { label: 'Role', value: 'AI Software Engineer' },
-                    { label: 'Location', value: 'Bengaluru, India' }
-                  ]
-                )}
-              >
-                <span className="cmd-prompt">&gt;</span> [PREVIEW_FULL_PDF]<span className="cursor-blink">_</span>
-              </button>
-            </div>
+          <div style={{ color: 'var(--inacio-fg-subtle)' }}>
+            Stack: React, TypeScript, FastAPI, ChromaDB, SQLite, Gemini API, Sentence Transformers.
           </div>
-        );
-        break;
-      case 'hire':
-        respLine = <div key={Date.now() + 'r'} className="term-line">Currently exploring opportunities for AI/ML Engineering roles.<br />Please reach out via email.</div>;
-        break;
-      case 'contact':
-        setIsContactModalOpen(true);
-        respLine = <div key={Date.now() + 'r'} className="term-line">&gt; Initiating secure communication channel...</div>;
-        break;
-      case 'github':
-        window.open('https://github.com/pvndr', '_blank');
-        respLine = <div key={Date.now() + 'r'} className="term-line">&gt; Opening GitHub profile...</div>;
-        break;
-      case 'linkedin':
-        window.open('https://www.linkedin.com/in/pavandr-ai/', '_blank');
-        respLine = <div key={Date.now() + 'r'} className="term-line">&gt; Opening LinkedIn profile...</div>;
-        break;
-      case 'whoami':
-        respLine = <div key={Date.now() + 'r'} className="term-line">Pavan D R<br />AI Software Engineer & Full Stack Developer</div>;
-        break;
-      case 'skills':
-        respLine = (
-          <div key={Date.now() + 'r'} className="term-line">
-            Languages: Python, TypeScript, Java, C, SQL<br />
-            Frontend: React, Next.js, HTML/CSS<br />
-            Backend & DB: Node.js, FastAPI, PostgreSQL, Prisma, Supabase, ChromaDB, SQLite<br />
-            AI & ML: Machine Learning, ChromaDB, Sentence Transformers, Gemini API, RAG
+        </div>
+      );
+    } else if (cmd.includes('paper') || cmd.includes('cricket') || cmd.includes('cricshift')) {
+      const pub = publications[0];
+      respLine = (
+        <div key={Date.now() + 'r'} className="inacio-term-block">
+          <div className="inacio-term-highlight">&gt; Published Survey &amp; CricShift Model</div>
+          <div style={{ color: 'var(--inacio-fg)', fontWeight: 600 }}>{pub.title}</div>
+          <div style={{ color: 'var(--inacio-fg-dim)' }}>
+            Venue: {pub.venue} ({pub.date}) · DOI: {pub.doi}
           </div>
-        );
-        break;
-      case 'sudo':
-        respLine = <div key={Date.now() + 'r'} className="term-line">pavan is not in the sudoers file. This incident will be reported.</div>;
-        break;
-      case 'theme matrix':
-        document.body.className = 'theme-matrix';
-        respLine = <div key={Date.now() + 'r'} className="term-line">System theme set to: <span className="term-highlight">MATRIX</span></div>;
-        break;
-      case 'theme onyx':
-        document.body.className = 'theme-onyx';
-        respLine = <div key={Date.now() + 'r'} className="term-line">System theme set to: <span className="term-highlight">ONYX</span></div>;
-        break;
-      case 'clear':
-        setIsWiping(true);
-        setTimeout(() => {
-          setCliLines([
-            <div key="init-1" className="term-line">Initializing communication protocols...</div>,
-            <div key="init-2" className="term-line">Type <span className="term-highlight">help</span> to see available commands.</div>
-          ]);
-          setIsWiping(false);
-        }, 500);
-        return;
-      default:
-        respLine = <div key={Date.now() + 'r'} className="term-line">Command not recognized: '<span className="term-highlight">{rawCmd}</span>'. Type <span className="term-highlight">help</span> for commands.</div>;
+          <div style={{ color: 'var(--inacio-fg-subtle)' }}>
+            {pub.abstract}
+          </div>
+        </div>
+      );
+    } else if (cmd.includes('edu') || cmd.includes('cgpa') || cmd.includes('college')) {
+      const cse = educationTimeline[0];
+      respLine = (
+        <div key={Date.now() + 'r'} className="inacio-term-block">
+          <div className="inacio-term-highlight">&gt; Academic Foundation &amp; Performance</div>
+          <div style={{ color: 'var(--inacio-fg)', fontWeight: 600 }}>
+            {cse.title} — {cse.organization} ({cse.period})
+          </div>
+          <div style={{ color: 'var(--inacio-accent)' }}>
+            Cumulative Grade Point Average: 8.56 CGPA
+          </div>
+          <div style={{ color: 'var(--inacio-fg-dim)' }}>
+            Pre-University: Anubhava Mantapa (Science) · High School: Jain Vidyalaya
+          </div>
+        </div>
+      );
+    } else if (cmd.includes('chronicle') || cmd.includes('labpad')) {
+      respLine = (
+        <div key={Date.now() + 'r'} className="inacio-term-block">
+          <div className="inacio-term-highlight">&gt; Chronicle &amp; LabPad Deployments</div>
+          <div>• <strong>Chronicle:</strong> Daily journal with Next.js, Prisma ORM, PostgreSQL, and Supabase. Live: <span style={{ color: 'var(--inacio-accent)' }}>chronicle-app-tau.vercel.app</span></div>
+          <div>• <strong>LabPad:</strong> Offline-first PWA for technical note logging with IndexedDB disk-writes and background Supabase sync. Live: <span style={{ color: 'var(--inacio-accent)' }}>project-d81ht.vercel.app</span></div>
+        </div>
+      );
+    } else if (cmd.includes('skills') || cmd.includes('stack')) {
+      respLine = (
+        <div key={Date.now() + 'r'} className="inacio-term-block">
+          <div><span className="inacio-term-highlight">AI / ML:</span> Python, Machine Learning, ChromaDB, Sentence Transformers, Gemini API, RAG</div>
+          <div><span className="inacio-term-highlight">Frontend:</span> TypeScript, JavaScript, React, Next.js, Three.js, HTML5/CSS3</div>
+          <div><span className="inacio-term-highlight">Backend:</span> Node.js, FastAPI, PostgreSQL, Prisma ORM, Supabase, MySQL</div>
+          <div><span className="inacio-term-highlight">Core:</span> Data Structures &amp; Algorithms, OOP, DBMS, Sub-second API design</div>
+        </div>
+      );
+    } else if (cmd.includes('whoami')) {
+      respLine = (
+        <div key={Date.now() + 'r'} className="inacio-term-line">
+          <span className="inacio-term-highlight">{profile.name}</span> — {profile.role}
+          <br />
+          {profile.bio}
+        </div>
+      );
+    } else if (cmd.includes('hire') || cmd.includes('contact') || cmd.includes('email')) {
+      respLine = (
+        <div key={Date.now() + 'r'} className="inacio-term-line">
+          Direct Email: <span className="inacio-term-highlight">{profile.links.email}</span> · Based in Bengaluru, Karnataka, India.
+        </div>
+      );
+    } else if (cmd === 'clear') {
+      setCliLines([
+        <div key="init-1" className="inacio-term-line sys">
+          Terminal buffer cleared.
+        </div>,
+      ]);
+      return;
+    } else if (cmd.includes('sudo')) {
+      respLine = (
+        <div key={Date.now() + 'r'} className="inacio-term-line" style={{ color: '#f87171' }}>
+          pavan is not in the sudoers file. Incident logged to telemetry monitor.
+        </div>
+      );
+    } else {
+      respLine = (
+        <div key={Date.now() + 'r'} className="inacio-term-block">
+          <div style={{ color: 'var(--inacio-fg-dim)' }}>Command '{rawCmd}' processed. Available topics:</div>
+          <div className="inacio-term-help-grid">
+            <span className="inacio-term-cmd">rag</span>
+            <span className="inacio-term-desc">Inspect RAG Knowledge Assistant architecture</span>
+            <span className="inacio-term-cmd">paper</span>
+            <span className="inacio-term-desc">View published IJARCCE cricket ML paper</span>
+            <span className="inacio-term-cmd">edu</span>
+            <span className="inacio-term-desc">View 8.56 CGPA academic credentials</span>
+            <span className="inacio-term-cmd">skills</span>
+            <span className="inacio-term-desc">View full engineering stack</span>
+            <span className="inacio-term-cmd">email</span>
+            <span className="inacio-term-desc">Display direct email and hiring contact</span>
+            <span className="inacio-term-cmd">clear</span>
+            <span className="inacio-term-desc">Clear console display</span>
+          </div>
+        </div>
+      );
     }
 
-    setCliLines(prev => [...prev, userLine, respLine]);
+    setCliLines((prev) => [...prev, userLine, respLine]);
   };
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!cliInput.trim()) return;
+    handleCommand(cliInput);
+    setCliInput('');
+  };
+
+  const quickPrompts = [
+    { label: 'Explain RAG Assistant', cmd: 'rag' },
+    { label: 'Cricket ML Paper Details', cmd: 'paper' },
+    { label: 'Academics & 8.56 CGPA', cmd: 'edu' },
+    { label: 'Chronicle & LabPad', cmd: 'chronicle' },
+    { label: 'Full Tech Stack', cmd: 'skills' },
+    { label: 'Hiring & Availability', cmd: 'email' },
+  ];
+
   return (
-    <section id="terminal" className="flow-section terminal-section">
-      <div className="section-heading reveal fade-up">
-        <span className="heading-num">05 / TERMINAL</span>
-        <h2 className="heading-title">Establish Connection</h2>
+    <section id="terminal" className="inacio-section">
+      <div className="inacio-section-head">
+        <div>
+          <span className="inacio-head-index">05 / PROTOCOL</span>
+          <h2 className="inacio-head-title">Direct Console &amp; Inquiry</h2>
+        </div>
+        <p className="inacio-head-desc">
+          Query the system architecture directly, inspect verified credentials, or initiate communication.
+        </p>
       </div>
 
-      <div className="interactive-terminal reveal fade-up delay-2">
-        <div className="term-top-bar">
-          <span className="term-btn"></span><span className="term-btn"></span><span className="term-btn"></span>
-          <span className="term-title">guest@pavan: ~/contact</span>
+      <div className="inacio-terminal-shell">
+        <div className="inacio-corner-cross tl">+</div>
+        <div className="inacio-corner-cross tr">+</div>
+        <div className="inacio-corner-cross bl">+</div>
+        <div className="inacio-corner-cross br">+</div>
+
+        {/* Console Header Bar */}
+        <div className="inacio-term-top">
+          <div className="inacio-term-session">
+            <Terminal size={14} style={{ color: 'var(--inacio-accent)' }} />
+            <span>[SESSION: GUEST@PAVANDR]</span>
+          </div>
+          <div className="inacio-term-status">
+            <span className="inacio-pulse-dot" />
+            <span>BLR / UTC+5:30 · READY [200]</span>
+          </div>
         </div>
-        <div id="cli-output" className={`term-output ${isWiping ? 'terminal-wipe-anim' : ''}`}>
+
+        {/* Topic Chips */}
+        <div className="inacio-term-chips-bar">
+          <span className="inacio-chips-label">
+            <Sparkles size={12} style={{ color: 'var(--inacio-accent)' }} />
+            Quick Query:
+          </span>
+          {quickPrompts.map((p) => (
+            <button
+              key={p.cmd}
+              onClick={() => handleCommand(p.cmd)}
+              className="inacio-term-chip"
+            >
+              {p.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Console Scroll Output */}
+        <div className="inacio-term-output">
           {cliLines}
         </div>
-        <form id="cli-form" className="term-input-line" onSubmit={handleCliSubmit}>
-          <span className="term-prompt">guest@pavan:~$</span>
+
+        {/* Console Input Line */}
+        <form onSubmit={handleSubmit} className="inacio-term-input-row">
+          <span className="inacio-term-prompt">pavan:~$</span>
           <input
             type="text"
-            id="cli-input"
-            className="term-input"
-            placeholder="Enter command..."
-            autoComplete="off"
+            className="inacio-term-input"
+            placeholder="Type a command or question (e.g. 'rag', 'paper', 'edu', 'skills')..."
             value={cliInput}
             onChange={(e) => setCliInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key !== 'Enter') {
-                playTypingSound();
-              }
-            }}
+            onKeyDown={() => playTypingSound()}
+            autoComplete="off"
+            spellCheck="false"
           />
         </form>
       </div>
 
-      <div className="fallback-contact reveal fade-up delay-4">
-        <div style={{ display: "flex", gap: "32px", flexWrap: "wrap", marginBottom: "24px" }}>
-          <button 
-            className="cmd-input magnetic-target" 
-            style={{ textDecoration: "none", border: "none", background: "transparent", cursor: "pointer", padding: 0, color: "inherit", font: "inherit" }}
-            onClick={() => setIsContactModalOpen(true)}
+      {/* Direct Contact Bar */}
+      <div className="inacio-terminal-direct-contact">
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+          <a
+            href={`mailto:${profile.links.email}`}
+            className="inacio-btn-primary"
+            onClick={() => playClickSound()}
           >
-            <span className="cmd-prompt">&gt;</span> Email Me<span className="cursor-blink">_</span>
-          </button>
-          <button className="cmd-input magnetic-target" onClick={copyEmailToClipboard}>
-            <span className="cmd-prompt">&gt;</span> <span id="copy-email-btn-text">Copy Email Address</span><span
-              className="cursor-blink">_</span>
+            <Mail size={15} />
+            <span>Email me directly</span>
+          </a>
+
+          <button onClick={copyEmail} className="inacio-btn-secondary">
+            {copiedEmail ? <Check size={14} style={{ color: 'var(--inacio-accent)' }} /> : <Copy size={14} />}
+            <span>{copiedEmail ? 'Copied to clipboard' : profile.links.email}</span>
           </button>
         </div>
-        <div className="social-links">
-          <a href="https://github.com/pvndr" target="_blank" rel="noreferrer" className="magnetic-target">GitHub</a>
-          <a href="https://www.linkedin.com/in/pavandr-ai/" target="_blank" rel="noreferrer" className="magnetic-target">LinkedIn</a>
+
+        <div style={{ display: 'flex', gap: '12px' }}>
+          <a
+            href={profile.links.github}
+            target="_blank"
+            rel="noreferrer"
+            className="inacio-action-link"
+            onClick={() => playClickSound()}
+          >
+            <ExternalLink size={13} />
+            <span>GitHub</span>
+          </a>
+          <a
+            href={profile.links.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            className="inacio-action-link"
+            onClick={() => playClickSound()}
+          >
+            <ExternalLink size={13} />
+            <span>LinkedIn</span>
+          </a>
         </div>
       </div>
     </section>

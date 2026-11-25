@@ -1,72 +1,67 @@
-import { useEffect, useState } from 'react';
-import { BackgroundCanvas } from './components/BackgroundCanvas';
-import { Cursor } from './components/Cursor';
-import { SfxToggle } from './components/SfxToggle';
-import { ScrollTracker } from './components/ScrollTracker';
-import { BootSequence } from './components/BootSequence';
-import { MainContent } from './components/MainContent';
-import { useScrollReveal } from './hooks/useScrollReveal';
-import { playHoverSound, playClickSound } from './utils/audio';
+import { useState } from 'react';
+import { useLenis } from './hooks/useLenis';
+import { InacioNavbar } from './components/layout/InacioNavbar';
+import { InacioHeroSection } from './components/sections/InacioHeroSection';
+import { InacioWorkSection } from './components/sections/InacioWorkSection';
+import { InacioBentoSection } from './components/sections/InacioBentoSection';
+import { InacioInspectorSection } from './components/sections/InacioInspectorSection';
+import { InacioJourneySection } from './components/sections/InacioJourneySection';
+import { InacioResearchSection } from './components/sections/InacioResearchSection';
+import { TerminalSection } from './components/sections/TerminalSection';
+import { InacioDock } from './components/ui/InacioDock';
+import { InacioCursor } from './components/ui/InacioCursor';
+import { FineGrainParticles } from './components/canvas/FineGrainParticles';
+import { DocumentModal, type DocumentModalData } from './components/ui/DocumentModal';
+import { PersistentVideoStage } from './components/ui/PersistentVideoStage';
+import './styles/inacio-design.css';
 
 export default function App() {
-  const [isBooting, setIsBooting] = useState(true);
+  const [activeDocument, setActiveDocument] = useState<DocumentModalData | null>(null);
 
-  useScrollReveal();
-
-  useEffect(() => {
-    // Parallax logic that used to be in CSS or app.js
-    const handleScroll = () => {
-      const scrolled = window.scrollY;
-      
-      const parallaxElements = document.querySelectorAll('.parallax');
-      parallaxElements.forEach((el) => {
-        const speed = 0.4;
-        (el as HTMLElement).style.transform = `translateY(${scrolled * speed}px)`;
-      });
-
-    };
-
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (target.closest('.magnetic-target')) {
-        playHoverSound();
-      }
-    };
-
-    const handleClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (target.closest('.magnetic-target')) {
-        playClickSound();
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    document.body.addEventListener('mouseover', handleMouseOver);
-    document.body.addEventListener('click', handleClick);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      document.body.removeEventListener('mouseover', handleMouseOver);
-      document.body.removeEventListener('click', handleClick);
-    };
-  }, []);
+  // Initialize Lenis smooth scroll
+  useLenis();
 
   return (
-    <>
-      {isBooting && <BootSequence onComplete={() => setIsBooting(false)} />}
-      
-      <div style={{ opacity: isBooting ? 0 : 1, transition: 'opacity 0.5s ease-in-out' }}>
-        <SfxToggle />
-        <div id="noise-overlay"></div>
-        
-        <BackgroundCanvas />
-        <Cursor />
+    <div className="inacio-root-app">
+      {/* 1. Custom Blend-Mode Magnetic Cursor */}
+      <InacioCursor />
 
-        <div className="global-axis"></div>
-        <ScrollTracker />
+      {/* 2. Fine Grain-Like Particles (Inácio Nakiti reference) */}
+      <FineGrainParticles />
 
-        <MainContent />
-      </div>
-    </>
+      {/* 3. Film Grain Texture & Subtle Blueprint Grid */}
+      <div className="inacio-grain-overlay" aria-hidden="true" />
+      <div className="inacio-grid-bg" aria-hidden="true" />
+      <div className="inacio-ambient-glow" aria-hidden="true" />
+
+      {/* 4. Top Architectural Navigation Bar */}
+      <InacioNavbar />
+
+      {/* 5. Main Site Flow: Split Contents (Left) & Persistent Smooth Video Stage (Right) */}
+      <main id="main-content" className="inacio-split-layout">
+        <div className="inacio-split-left-content">
+          <InacioHeroSection onOpenDocument={setActiveDocument} />
+          <InacioWorkSection onOpenDocument={setActiveDocument} />
+          <InacioBentoSection />
+          <InacioInspectorSection />
+          <InacioJourneySection />
+          <InacioResearchSection onOpenDocument={setActiveDocument} />
+          <TerminalSection />
+        </div>
+
+        <aside className="inacio-split-right-stage" aria-label="Persistent Video Persona">
+          <PersistentVideoStage />
+        </aside>
+      </main>
+
+      {/* 6. Inácio's Signature Floating Bottom Dock */}
+      <InacioDock />
+
+      {/* 7. Document & Research Preview Modal */}
+      <DocumentModal
+        document={activeDocument}
+        onClose={() => setActiveDocument(null)}
+      />
+    </div>
   );
 }

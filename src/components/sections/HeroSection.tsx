@@ -1,63 +1,131 @@
-
+import { motion } from 'framer-motion';
+import { profile } from '../../data/profile';
+import { ThreeHeroScene } from '../canvas/ThreeHeroScene';
+import { InteractivePortrait } from '../canvas/InteractivePortrait';
+import { ArrowDownRight, FileText } from 'lucide-react';
 
 interface HeroSectionProps {
-  scrollToSection: (id: string) => void;
+  onOpenDocument?: (doc: { title: string; url: string; type: 'pdf' | 'image' }) => void;
 }
 
-export function HeroSection({ scrollToSection }: HeroSectionProps) {
+export function HeroSection({ onOpenDocument }: HeroSectionProps) {
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <section id="hero" className="flow-section hero-section reveal">
-      <div className="hero-content">
-        <div className="hero-status-bar magnetic-target">
-          <span className="status-indicator"></span>
-          <span className="status-text">SYSTEM.STATUS: ONLINE</span>
-        </div>
+    <section id="hero" className="hero-spatial-section">
+      {/* 3D Three.js Background Neural Scene */}
+      <ThreeHeroScene />
 
-        <h1 className="editorial-title">
-          <span className="title-line reveal fade-up delay-1">ENGINEERING</span>
-          <span className="title-line title-accent reveal fade-up delay-2">INTELLIGENT</span>
-          <span className="title-line reveal fade-up delay-3">SYSTEMS</span>
-        </h1>
+      <div className="hero-content-wrapper">
+        <div className="hero-layout-grid">
+          {/* Left Column: Typography & Engineering Positioning */}
+          <div className="hero-text-column">
+            {/* Live Availability Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="hero-status-pill"
+            >
+              <span className="live-pulsar" />
+              <span className="status-label">{profile.availability.label}</span>
+            </motion.div>
 
-        <p className="hero-description reveal fade-up delay-4">
-          I am Pavan D R, an AI Software Engineer & Full Stack Developer. I design and architect scalable solutions at
-          the intersection of machine learning models, product architecture, and human-centered engineering.
-        </p>
+            {/* Editorial Title Capped at 680px per B5 */}
+            <motion.h1
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="hero-massive-headline"
+              style={{ textWrap: 'balance' }}
+            >
+              <span className="headline-row">Building software with machine learning,</span>
+              <span className="headline-gradient">vector search, and clean architecture.</span>
+            </motion.h1>
 
-        {/**/}
-        <div className="system-readout reveal fade-up delay-5">
-          <div className="readout-line"><span className="prompt">&gt;</span> <span className="typing">Loading competencies...</span>
+            {/* Bio & Concrete Facts per B8 */}
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="hero-lead-paragraph"
+              style={{ textWrap: 'pretty' }}
+            >
+              I am <strong className="text-white">{profile.name}</strong>, a Computer Science student (8.56 CGPA) and software developer in Bengaluru. I design retrieval augmented generation pipelines, PostgreSQL backed applications, and interactive web tools.
+            </motion.p>
+
+            {/* Clear Primary Action & Secondary Action per A4 */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="hero-cta-row"
+            >
+              <button
+                onClick={() => scrollTo('work')}
+                className="hero-primary-btn"
+              >
+                <span>Inspect case studies</span>
+                <ArrowDownRight size={17} />
+              </button>
+
+              <button
+                onClick={() => {
+                  onOpenDocument?.({
+                    title: 'Pavan D R — Resume',
+                    url: profile.links.resume,
+                    type: 'pdf',
+                  });
+                }}
+                className="hero-secondary-btn"
+              >
+                <FileText size={16} />
+                <span>Review resume</span>
+              </button>
+            </motion.div>
+
+            {/* Proof Signal per A2 / B8 */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="hero-proof-strip"
+            >
+              <div className="proof-metric-item">
+                <span className="proof-val">8.56</span>
+                <span className="proof-lbl">B.E. CGPA</span>
+              </div>
+              <div className="proof-divider" />
+              <div className="proof-metric-item">
+                <span className="proof-val">IJARCCE</span>
+                <span className="proof-lbl">Published research</span>
+              </div>
+              <div className="proof-divider" />
+              <div className="proof-metric-item">
+                <span className="proof-val">5+</span>
+                <span className="proof-lbl">Engineered repos</span>
+              </div>
+            </motion.div>
           </div>
-          <div className="readout-line success"><span className="prompt">&gt;</span> Neural Architecture [OK]</div>
-          <div className="readout-line success"><span className="prompt">&gt;</span> Full Stack Data Pipelines [OK]</div>
-          <div className="readout-line success"><span className="prompt">&gt;</span> Product UX Rendering [OK]</div>
-        </div>
 
-        <div className="hero-actions reveal fade-up delay-6" style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-          <button className="cmd-input magnetic-target" onClick={() => scrollToSection('case-studies')}>
-            <span className="cmd-prompt">&gt;</span> Execute Case Studies<span className="cursor-blink">_</span>
-          </button>
+          {/* Right Column: WebGL Interactive Portrait */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="hero-portrait-column"
+          >
+            <InteractivePortrait
+              imageSrc="/hero.png"
+              name={profile.name}
+              role={profile.role}
+              status="AVAILABLE · BENGALURU"
+            />
+          </motion.div>
         </div>
-      </div>
-
-      {/**/}
-      <div 
-        className="scroll-indicator magnetic-target" 
-        onClick={() => scrollToSection('case-studies')}
-        role="button"
-        tabIndex={0}
-        aria-label="Scroll to Case Studies"
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            scrollToSection('case-studies');
-          }
-        }}
-      >
-        <div className="mouse-icon">
-          <div className="wheel"></div>
-        </div>
-        <span className="scroll-label">SCROLL TO DISCOVER</span>
       </div>
     </section>
   );
